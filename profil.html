@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POSTE JOB — Mon profil</title>
+<link rel="stylesheet" href="assets/css/profil.css">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="logo-wrap" onclick="window.location.href='index.html'">
+    <div class="logo-icon"><span></span></div>
+    <div class="logo-text">POSTE <strong>JOB</strong></div>
+  </div>
+  <div class="topbar-right">
+    <button class="notif-btn">🔔</button>
+    <div class="user-chip">
+      <div class="user-ava" id="topbar-ava">?</div>
+      <span id="topbar-name">Chargement…</span>
+    </div>
+    <button class="btn-ghost" onclick="logout()">Déconnexion</button>
+  </div>
+</nav>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="nav-section">
+      <div class="nav-lbl">Candidat</div>
+      <div class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        Mon profil
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Messages
+        <span class="nav-badge">3</span>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Mes candidatures
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Offres d'emploi
+      </div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-lbl">Compte</div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        Paramètres
+      </div>
+      <div class="nav-item" onclick="logout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Déconnexion
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main" id="main-content">
+    <!-- Hero -->
+    <div class="profil-hero">
+      <div class="hero-inner">
+        <div class="big-ava" id="p-ava">?</div>
+        <div class="hero-info">
+          <div class="profil-nm" id="p-nm">Chargement…</div>
+          <div class="profil-role" id="p-role"></div>
+          <div class="badges-row">
+            <span class="badge badge-amber" id="p-badge-xp"></span>
+            <span class="badge badge-grey" id="p-badge-ville"></span>
+            <span class="badge badge-jade" id="p-badge-dispo"></span>
+          </div>
+        </div>
+        <button class="btn-edit" onclick="openModal()">✏️ Modifier le profil</button>
+      </div>
+    </div>
+
+    <!-- Complétion -->
+    <div class="pcard full" style="margin-bottom:1rem;">
+      <div class="pcard-hd">Complétude du profil</div>
+      <div class="completion-bar"><div class="completion-fill" id="completion-fill" style="width:0%"></div></div>
+      <div class="completion-lbl" id="completion-lbl">Calcul en cours…</div>
+    </div>
+
+    <!-- Grille -->
+    <div class="profil-grid">
+      <div class="pcard">
+        <div class="pcard-hd">Informations</div>
+        <div class="info-row"><span class="info-lbl">E-mail</span><span class="info-val" id="p-email">—</span></div>
+        <div class="info-row"><span class="info-lbl">Téléphone</span><span class="info-val" id="p-tel">—</span></div>
+        <div class="info-row"><span class="info-lbl">Secteur</span><span class="info-val" id="p-secteur">—</span></div>
+        <div class="info-row"><span class="info-lbl">Études</span><span class="info-val" id="p-etude">—</span></div>
+        <div class="info-row"><span class="info-lbl">Prétention</span><span class="info-val" id="p-salaire">—</span></div>
+      </div>
+
+      <div class="pcard">
+        <div class="pcard-hd">Expérience</div>
+        <div class="xp-visual">
+          <div class="xp-num" id="p-xp-num">0</div>
+          <div class="xp-bar-wrap">
+            <div class="xp-bar-lbl">Niveau de séniorité</div>
+            <div class="xp-bar-track"><div class="xp-bar-fill" id="p-xp-bar" style="width:0%"></div></div>
+          </div>
+        </div>
+        <div class="xp-pill" id="p-xp-pill">—</div>
+      </div>
+
+      <div class="pcard full">
+        <div class="pcard-hd">Présentation</div>
+        <p class="pcard-bio" id="p-bio">—</p>
+      </div>
+
+      <div class="pcard full">
+        <div class="pcard-hd">Compétences</div>
+        <div class="chips-ro" id="p-chips"></div>
+      </div>
+      <div class="pcard full" id="cv-card">
+        <div class="pcard-hd">Curriculum Vitæ</div>
+        <div id="cv-card-content">
+          <span style="color:var(--text3);font-style:italic;font-size:13px;">Aucun CV chargé — cliquez sur "Modifier le profil" pour en ajouter un.</span>
+        </div>
+      </div>
+    </div>
+
+<!-- ══ MODAL ÉDITION ══ -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-hd">
+      <div class="modal-ttl">Modifier le profil</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="modal-sec">Identité</div>
+    <div class="fgrid">
+      <div class="fld"><label>Prénom</label><input type="text" id="m-prenom"></div>
+      <div class="fld"><label>Nom</label><input type="text" id="m-nom"></div>
+      <div class="fld span2"><label>Poste / Titre</label><input type="text" id="m-poste"></div>
+      <div class="fld"><label>Ville</label><input type="text" id="m-ville"></div>
+      <div class="fld"><label>Téléphone</label><input type="tel" id="m-tel"></div>
+    </div>
+
+    <div class="modal-sec">Profil professionnel</div>
+    <div class="fgrid">
+      <div class="fld">
+        <label>Secteur</label>
+        <select id="m-secteur">
+          <option value="Tech">Informatique / Tech</option>
+          <option value="Finance">Finance / Banque</option>
+          <option value="Marketing">Marketing / Communication</option>
+          <option value="Design">Design / Créatif</option>
+          <option value="Réseau">Réseaux / Infra</option>
+          <option value="BTP">BTP / Génie civil</option>
+          <option value="Santé">Santé</option>
+          <option value="Enseignement">Enseignement</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label>Disponibilité</label>
+        <select id="m-dispo">
+          <option value="Immédiate">Immédiate</option>
+          <option value="Sous 1 mois">Sous 1 mois</option>
+          <option value="Sous 3 mois">Sous 3 mois</option>
+          <option value="Non disponible">Non disponible</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label>Niveau d'études</label>
+        <select id="m-etude">
+          <option>Bac +5 / Master</option>
+          <option>Bac +3 / Licence</option>
+          <option>BTS / DUT</option>
+          <option>Bac</option>
+          <option>Autodidacte / Certifications</option>
+        </select>
+      </div>
+      <div class="fld"><label>Prétention (FCFA)</label><input type="text" id="m-salaire" placeholder="Ex : 500 000"></div>
+      <div class="fld span2"><label>Bio</label><textarea id="m-bio" rows="3"></textarea></div>
+    </div>
+
+    <div class="modal-sec">Expérience</div>
+    <div class="xp-row">
+      <span style="font-size:13px;color:var(--text2);">Années d'expérience</span>
+      <div>
+        <span class="xp-preview" id="m-xp-val">0</span>
+        <span style="font-size:11px;color:var(--text3);margin-left:4px;" id="m-xp-lvl">Débutant</span>
+      </div>
+    </div>
+    <div class="slider-wrap">
+      <div class="track-fill" id="m-track" style="width:0%"></div>
+      <input type="range" min="0" max="20" value="0" id="m-xp-slider" oninput="updateModalSlider(this.value)">
+    </div>
+
+    <div class="modal-sec">Compétences</div>
+    <div class="chips-edit" id="m-chips-box" onclick="document.getElementById('m-chip-inp').focus()">
+      <input class="chip-inp" id="m-chip-inp" placeholder="Ajouter… puis Entrée" onkeydown="addModalChip(event)">
+    </div>
+
+    <div class="modal-sec">Curriculum Vitæ</div>
+    <!-- CV actuel -->
+    <div id="cv-current-wrap" style="display:none;margin-bottom:10px;padding:10px 14px;background:var(--jade-soft);border:1px solid rgba(15,158,114,0.2);border-radius:var(--r-sm);display:none;align-items:center;gap:10px;">
+      <span style="font-size:20px;">📎</span>
+      <div style="flex:1;min-width:0;">
+        <div id="cv-current-name" style="font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
+        <div id="cv-current-size" style="font-size:11px;color:var(--text3);margin-top:2px;"></div>
+      </div>
+      <a id="cv-download-btn" href="#" download style="padding:6px 12px;background:var(--amber);color:#fff;border-radius:var(--r-sm);font-size:12px;font-weight:600;text-decoration:none;">⬇ Télécharger</a>
+    </div>
+    <!-- Zone upload -->
+    <input type="file" id="m-cv-input" accept=".pdf,.doc,.docx" style="display:none" onchange="handleModalCV(this)">
+    <div id="m-cv-drop" class="m-cv-zone"
+      onclick="document.getElementById('m-cv-input').click()"
+      ondragover="event.preventDefault();this.classList.add('m-drag')"
+      ondragleave="this.classList.remove('m-drag')"
+      ondrop="event.preventDefault();this.classList.remove('m-drag');handleModalCVDrop(event)">
+      <div style="font-size:28px;margin-bottom:8px;" id="m-cv-ico">📄</div>
+      <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px;" id="m-cv-lbl">Cliquez ou glissez un nouveau CV</div>
+      <div style="font-size:11px;color:var(--text3);" id="m-cv-hint">PDF · DOC · DOCX — max 5 Mo</div>
+    </div>
+    <!-- Nouveau CV preview -->
+    <div id="m-cv-preview" style="display:none;margin-top:8px;padding:10px 14px;background:var(--jade-soft);border:1px solid rgba(15,158,114,0.2);border-radius:var(--r-sm);align-items:center;gap:10px;">
+      <span style="font-size:20px;">✅</span>
+      <div style="flex:1;min-width:0;">
+        <div id="m-cv-filename" style="font-size:13px;font-weight:500;color:var(--jade);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
+        <div id="m-cv-filesize" style="font-size:11px;color:var(--text3);margin-top:2px;"></div>
+      </div>
+      <button onclick="removeModalCV()" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);" title="Annuler">✕</button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal()">Annuler</button>
+      <button class="btn-cta" onclick="saveProfile()">Enregistrer →</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toast-msg"></span></div>
+<script src="assets/js/profil.js"></script>
+</body>
+</html>

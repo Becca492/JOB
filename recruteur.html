@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>POSTE JOB — Espace Recruteur</title>
+    <link rel="stylesheet" href="assets/css/recruteur.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav class="topbar">
+      <div style="display: flex; align-items: center; gap: 12px">
+        <div class="logo-wrap" onclick="window.location.href = 'index.html'">
+          <div class="logo-icon"><span></span></div>
+          <div class="logo-text">POSTE <strong>JOB</strong></div>
+        </div>
+        <span class="rec-tag">RECRUTEUR</span>
+      </div>
+      <div class="topbar-right">
+        <button class="notif-btn">🔔</button>
+        <div class="user-chip">
+          <div class="user-ava" id="topbar-ava">RH</div>
+          <span id="topbar-name">Recruteur</span>
+        </div>
+        <button class="btn-ghost" onclick="logout()">Déconnexion</button>
+      </div>
+    </nav>
+
+    <div class="layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="nav-section">
+          <div class="nav-lbl">Recrutement</div>
+          <div class="nav-item active">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            Candidats
+            <span class="nav-badge" id="sidebar-count">—</span>
+          </div>
+          <div class="nav-item">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="2" y="6" width="20" height="14" rx="2" />
+              <path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+            </svg>
+            Mes offres
+          </div>
+          <div class="nav-item">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+            </svg>
+            Favoris
+            <span class="nav-badge" id="fav-count">0</span>
+          </div>
+          <div class="nav-item">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+              />
+            </svg>
+            Messages
+          </div>
+        </div>
+        <div class="nav-section">
+          <div class="nav-lbl">Compte</div>
+          <div class="nav-item">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="18" y1="20" x2="18" y2="10" />
+              <line x1="12" y1="20" x2="12" y2="4" />
+              <line x1="6" y1="20" x2="6" y2="14" />
+            </svg>
+            Statistiques
+          </div>
+          <div class="nav-item" onclick="logout()">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            Déconnexion
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main -->
+      <main class="main">
+        <!-- Banner -->
+        <div class="banner">
+          <div class="banner-inner">
+            <div>
+              <h2>Tableau de bord recruteur</h2>
+              <p>
+                Explorez les profils disponibles et trouvez votre prochain
+                talent.
+              </p>
+            </div>
+            <button
+              class="btn-new-offer"
+              onclick="showToast('✅ Fonctionnalité bientôt disponible !')"
+            >
+              + Publier une offre
+            </button>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-num" id="st-total">—</div>
+            <div class="stat-lbl">Profils actifs</div>
+            <div class="stat-trend trend-up">↑ +3 cette semaine</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="st-dispo">—</div>
+            <div class="stat-lbl">Disponibles imméd.</div>
+            <div class="stat-trend trend-up">↑ prêts à démarrer</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="st-fav">0</div>
+            <div class="stat-lbl">Profils sauvegardés</div>
+            <div class="stat-trend" style="color: var(--text3)">
+              Cliquez ♥ pour sauver
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">38</div>
+            <div class="stat-lbl">Recrutés ce mois</div>
+            <div class="stat-trend trend-up">↑ +12 vs mois dernier</div>
+          </div>
+        </div>
+
+        <!-- Barre filtres -->
+        <div class="filter-bar">
+          <div class="filter-row">
+            <!-- Recherche -->
+            <div class="search-wrap">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                class="search-inp"
+                type="text"
+                id="f-search"
+                placeholder="Nom, poste, compétence…"
+                oninput="renderTable()"
+              />
+            </div>
+            <!-- Secteur -->
+            <select
+              class="filter-select"
+              id="f-secteur"
+              onchange="renderTable()"
+            >
+              <option value="">Tous secteurs</option>
+              <option value="Tech">Informatique / Tech</option>
+              <option value="Finance">Finance / Banque</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Design">Design</option>
+              <option value="Réseau">Réseaux / Infra</option>
+              <option value="BTP">BTP / Génie civil</option>
+              <option value="Santé">Santé</option>
+              <option value="Enseignement">Enseignement</option>
+            </select>
+            <!-- Disponibilité -->
+            <select class="filter-select" id="f-dispo" onchange="renderTable()">
+              <option value="">Toutes dispo.</option>
+              <option value="Immédiate">Disponible immédiatement</option>
+              <option value="Sous 1 mois">Sous 1 mois</option>
+              <option value="Sous 3 mois">Sous 3 mois</option>
+            </select>
+            <!-- XP min -->
+            <select class="filter-select" id="f-xp" onchange="renderTable()">
+              <option value="0">Toutes XP</option>
+              <option value="1">≥ 1 an</option>
+              <option value="3">≥ 3 ans</option>
+              <option value="5">≥ 5 ans</option>
+              <option value="8">≥ 8 ans</option>
+              <option value="10">≥ 10 ans</option>
+            </select>
+            <!-- Ville -->
+            <select class="filter-select" id="f-ville" onchange="renderTable()">
+              <option value="">Toutes villes</option>
+              <option value="Abidjan">Abidjan</option>
+              <option value="Bouaké">Bouaké</option>
+              <option value="Yamoussoukro">Yamoussoukro</option>
+            </select>
+            <button class="btn-reset" onclick="resetFilters()">
+              ✕ Réinit.
+            </button>
+          </div>
+          <div class="filter-info">
+            <div class="result-count" id="result-count">Chargement…</div>
+            <div class="sort-row">
+              Trier :
+              <select
+                class="filter-select"
+                id="f-sort"
+                onchange="renderTable()"
+                style="padding: 6px 28px 6px 10px; font-size: 12px"
+              >
+                <option value="recent">Plus récent</option>
+                <option value="xp-desc">Expérience ↓</option>
+                <option value="xp-asc">Expérience ↑</option>
+                <option value="az">Nom A→Z</option>
+                <option value="za">Nom Z→A</option>
+                <option value="salaire-asc">Prétention ↑</option>
+                <option value="salaire-desc">Prétention ↓</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-card">
+          <div class="table-head">
+            <div></div>
+            <div>Candidat</div>
+            <div
+              class="col-xp th-sortable"
+              onclick="cycleSort('xp')"
+              id="th-xp"
+            >
+              Expérience
+            </div>
+            <div>Compétences</div>
+            <div class="col-dispo">Disponibilité</div>
+            <div style="text-align: right">Actions</div>
+          </div>
+          <div id="candidates-list"></div>
+          <div class="no-result" id="no-result" style="display: none">
+            <div class="no-result-ico">🔍</div>
+            Aucun candidat ne correspond à cette recherche.
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ══ PANEL FICHE CANDIDAT ══ -->
+    <div
+      class="modal-overlay"
+      id="panel-overlay"
+      onclick="if (event.target === this) closePanel();"
+    >
+      <div class="modal-panel" id="modal-panel">
+        <div class="panel-hd">
+          <div class="panel-ttl">Fiche candidat</div>
+          <button class="panel-close" onclick="closePanel()">✕</button>
+        </div>
+        <div class="panel-body" id="panel-body"><!-- filled by JS --></div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"><span id="toast-msg"></span></div>
+    <script src="assets/js/recruteur.js"></script>
+  </body>
+</html>

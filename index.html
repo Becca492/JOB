@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>POSTE JOB — Connexion</title>
+    <link rel="stylesheet" href="assets/css/index.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="landing">
+      <!-- ── Gauche hero ── -->
+      <div class="hero-left">
+        <div class="hero-grid"></div>
+        <nav class="hero-nav">
+          <div class="logo-icon"><span></span></div>
+          <div class="logo-text">POSTE <strong>JOB</strong></div>
+        </nav>
+        <div class="hero-content">
+          <div class="hero-pill">
+            <span class="pill-dot"></span>
+            Plateforme de recrutement · Côte d'Ivoire
+          </div>
+          <h1 class="hero-h1">
+            Votre talent mérite<br />d'être <em>découvert.</em>
+          </h1>
+          <p class="hero-sub">
+            Déposez votre profil et votre CV en quelques minutes.<br />Les
+            meilleurs recruteurs vous trouvent directement.
+          </p>
+          <div class="hero-stats">
+            <div>
+              <div class="stat-num" id="stat-profiles">247</div>
+              <div class="stat-lbl">Profils actifs</div>
+            </div>
+            <div>
+              <div class="stat-num">38</div>
+              <div class="stat-lbl">Recrutés ce mois</div>
+            </div>
+            <div>
+              <div class="stat-num">12</div>
+              <div class="stat-lbl">Offres ouvertes</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Droite auth ── -->
+      <div class="hero-right">
+        <div class="auth-panel">
+          <h2 class="auth-title">Bienvenue</h2>
+          <p class="auth-sub" id="auth-sub">
+            Connectez-vous à votre espace candidat
+          </p>
+
+          <div class="role-tabs">
+            <button
+              class="role-tab active"
+              id="tab-candidat"
+              onclick="selectRole('candidat', this)"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+              </svg>
+              Candidat
+            </button>
+            <button
+              class="role-tab"
+              id="tab-recruteur"
+              onclick="selectRole('recruteur', this)"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="2" y="6" width="20" height="14" rx="2" />
+                <path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+                <path d="M12 12v4m-2-2h4" />
+              </svg>
+              Recruteur
+            </button>
+          </div>
+
+          <div class="err-box" id="err-box">
+            ⚠ Email ou mot de passe incorrect.
+          </div>
+
+          <div class="fld">
+            <label>Adresse e-mail</label>
+            <input
+              type="email"
+              id="login-email"
+              placeholder="votre@email.ci"
+              onkeydown="if (event.key === 'Enter') doLogin();"
+            />
+          </div>
+          <div class="fld">
+            <label>Mot de passe</label>
+            <div class="pw-wrap">
+              <input
+                type="password"
+                id="login-pw"
+                placeholder="••••••••"
+                onkeydown="if (event.key === 'Enter') doLogin();"
+              />
+              <button class="pw-eye" onclick="togglePw('login-pw', this)">
+                👁
+              </button>
+            </div>
+          </div>
+
+          <button class="btn-primary" onclick="doLogin()">
+            Se connecter →
+          </button>
+
+          <div id="candidat-only">
+            <div class="auth-sep">ou</div>
+            <button
+              class="btn-outline"
+              onclick="window.location.href = 'register.html'"
+            >
+              Créer mon compte candidat
+            </button>
+          </div>
+
+          <div class="link-recruteur">
+            <a
+              onclick="
+                selectRole(
+                  'recruteur',
+                  document.getElementById('tab-recruteur'),
+                )
+              "
+              >Accès recruteur</a
+            >
+          </div>
+
+          <!-- Comptes démo -->
+          <div
+            style="
+              margin-top: 1.5rem;
+              padding: 12px;
+              background: var(--bg3);
+              border-radius: var(--r-sm);
+              font-size: 12px;
+              color: var(--text3);
+              line-height: 1.8;
+            "
+          >
+            <strong style="color: var(--text2)"
+              >Comptes de démonstration :</strong
+            ><br />
+            Candidat :
+            <code style="color: var(--amber)">kouassi.amani@email.ci</code> /
+            <code>demo123</code><br />
+            Recruteur : <code style="color: var(--amber)">drh@orange.ci</code> /
+            <code>recruteur123</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"><span id="toast-msg"></span></div>
+
+    <script src="assets/js/index.js"></script>
+  </body>
+</html>

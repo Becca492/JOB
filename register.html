@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>POSTE JOB — Créer un compte candidat</title>
+    <link rel="stylesheet" href="assets/css/register.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav class="topbar">
+      <div class="logo-wrap" onclick="window.location.href = 'index.html'">
+        <div class="logo-icon"><span></span></div>
+        <div class="logo-text">POSTE <strong>JOB</strong></div>
+      </div>
+      <button class="btn-ghost" onclick="window.location.href = 'index.html'">
+        ← Retour
+      </button>
+    </nav>
+
+    <div class="reg-body">
+      <div class="reg-header">
+        <div class="step-bar">
+          <div class="step-dot done"></div>
+          <div class="step-dot done"></div>
+          <div class="step-dot done"></div>
+        </div>
+        <h2 class="reg-ttl">Créer mon compte candidat</h2>
+        <p class="reg-sub">
+          Remplissez votre profil pour être visible des recruteurs
+        </p>
+      </div>
+
+      <!-- ── Infos personnelles ── -->
+      <div class="rcard">
+        <div class="rcard-hd">Informations personnelles</div>
+        <div class="fgrid">
+          <div class="fld">
+            <label>Prénom *</label>
+            <input type="text" id="r-prenom" placeholder="Ex : Kouassi" />
+          </div>
+          <div class="fld">
+            <label>Nom *</label>
+            <input type="text" id="r-nom" placeholder="Ex : Amani" />
+          </div>
+          <div class="fld">
+            <label>E-mail *</label>
+            <input type="email" id="r-email" placeholder="votre@email.ci" />
+          </div>
+          <div class="fld">
+            <label>Téléphone</label>
+            <input type="tel" id="r-tel" placeholder="+225 07 00 00 00 00" />
+          </div>
+          <div class="fld">
+            <label>Mot de passe *</label>
+            <div class="pw-wrap">
+              <input
+                type="password"
+                id="r-pw"
+                placeholder="Minimum 6 caractères"
+                oninput="checkStrength(this.value)"
+              />
+              <button class="pw-eye" onclick="togglePw('r-pw', this)">
+                👁
+              </button>
+            </div>
+            <div class="pw-strength" id="pw-bars">
+              <div class="pw-bar" id="bar1"></div>
+              <div class="pw-bar" id="bar2"></div>
+              <div class="pw-bar" id="bar3"></div>
+              <div class="pw-bar" id="bar4"></div>
+            </div>
+            <div class="pw-strength-lbl" id="pw-lbl"></div>
+          </div>
+          <div class="fld">
+            <label>Confirmer le mot de passe *</label>
+            <div class="pw-wrap">
+              <input
+                type="password"
+                id="r-pw2"
+                placeholder="Répétez le mot de passe"
+              />
+              <button class="pw-eye" onclick="togglePw('r-pw2', this)">
+                👁
+              </button>
+            </div>
+          </div>
+          <div class="fld">
+            <label>Ville</label>
+            <input type="text" id="r-ville" placeholder="Abidjan" />
+          </div>
+          <div class="fld">
+            <label>Pays</label>
+            <select id="r-pays">
+              <option value="CI">Côte d'Ivoire</option>
+              <option value="SN">Sénégal</option>
+              <option value="ML">Mali</option>
+              <option value="BF">Burkina Faso</option>
+              <option value="CM">Cameroun</option>
+              <option value="GH">Ghana</option>
+              <option value="FR">France</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Infos professionnelles ── -->
+      <div class="rcard">
+        <div class="rcard-hd">Informations professionnelles</div>
+        <div class="fgrid">
+          <div class="fld span2">
+            <label>Poste / Titre professionnel *</label>
+            <input
+              type="text"
+              id="r-poste"
+              placeholder="Ex : Développeur Full Stack, Comptable Senior…"
+            />
+          </div>
+          <div class="fld">
+            <label>Secteur d'activité</label>
+            <select id="r-secteur">
+              <option value="Tech">Informatique / Tech</option>
+              <option value="Finance">Finance / Banque</option>
+              <option value="Marketing">Marketing / Communication</option>
+              <option value="Design">Design / Créatif</option>
+              <option value="Réseau">Réseaux / Infra</option>
+              <option value="BTP">BTP / Génie civil</option>
+              <option value="Santé">Santé</option>
+              <option value="Enseignement">Enseignement</option>
+              <option value="Autre">Autre</option>
+            </select>
+          </div>
+          <div class="fld">
+            <label>Disponibilité</label>
+            <select id="r-dispo">
+              <option value="Immédiate">Immédiate</option>
+              <option value="Sous 1 mois">Sous 1 mois</option>
+              <option value="Sous 3 mois">Sous 3 mois</option>
+              <option value="Non disponible">Ne cherche pas activement</option>
+            </select>
+          </div>
+          <div class="fld">
+            <label>Niveau d'études</label>
+            <select id="r-etude">
+              <option>Bac +5 / Master</option>
+              <option>Bac +3 / Licence</option>
+              <option>BTS / DUT</option>
+              <option>Bac</option>
+              <option>Autodidacte / Certifications</option>
+            </select>
+          </div>
+          <div class="fld">
+            <label>Prétention salariale (FCFA/mois)</label>
+            <input type="text" id="r-salaire" placeholder="Ex : 500 000" />
+          </div>
+          <div class="fld span2">
+            <label>Bio / Présentation</label>
+            <textarea
+              id="r-bio"
+              placeholder="Décrivez votre parcours, vos forces, vos ambitions…"
+              rows="4"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Expérience & compétences ── -->
+      <div class="rcard">
+        <div class="rcard-hd">Expérience & Compétences</div>
+        <div class="fgrid">
+          <div class="fld span2">
+            <label>Années d'expérience</label>
+            <div class="exp-box">
+              <div class="exp-top">
+                <div>
+                  <div class="exp-big" id="exp-val">0</div>
+                  <div class="exp-unit">ans d'expérience</div>
+                </div>
+                <span class="exp-lvl-pill" id="exp-lvl">Débutant</span>
+              </div>
+              <div class="slider-wrap">
+                <div class="track-fill" id="exp-track" style="width: 0%"></div>
+                <input
+                  type="range"
+                  min="0"
+                  max="20"
+                  value="0"
+                  id="exp-slider"
+                  oninput="updateSlider(this.value)"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="fld span2">
+            <label
+              >Compétences
+              <span
+                style="font-weight: 400; font-size: 10px; text-transform: none"
+                >(appuyez Entrée pour ajouter)</span
+              ></label
+            >
+            <div
+              class="chips-box"
+              id="chips-box"
+              onclick="document.getElementById('chip-input').focus()"
+            >
+              <input
+                class="chip-inp"
+                id="chip-input"
+                placeholder="Ajouter une compétence…"
+                onkeydown="addChip(event)"
+              />
+            </div>
+            <div class="chips-hint">
+              Exemples : Excel, React, Comptabilité, Figma…
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CV ── -->
+      <div class="rcard">
+        <div class="rcard-hd">Curriculum Vitæ</div>
+        <!-- input file caché -->
+        <input
+          type="file"
+          id="cv-input"
+          accept=".pdf,.doc,.docx"
+          style="display: none"
+          onchange="handleCVUpload(this)"
+        />
+        <div
+          class="cv-drop"
+          id="cv-drop"
+          onclick="document.getElementById('cv-input').click()"
+          ondragover="
+            event.preventDefault();
+            this.classList.add('drag');
+          "
+          ondragleave="this.classList.remove('drag')"
+          ondrop="
+            event.preventDefault();
+            this.classList.remove('drag');
+            handleCVDrop(event);
+          "
+        >
+          <div class="cv-ico" id="cv-ico">📄</div>
+          <div class="cv-lbl" id="cv-lbl">Cliquez ou glissez votre CV ici</div>
+          <div class="cv-hint" id="cv-hint">PDF · DOC · DOCX — max 5 Mo</div>
+        </div>
+        <!-- Aperçu après upload -->
+        <div
+          id="cv-preview"
+          style="
+            display: none;
+            margin-top: 10px;
+            padding: 12px 14px;
+            background: var(--jade-soft);
+            border: 1px solid rgba(15, 158, 114, 0.2);
+            border-radius: var(--r-sm);
+            display: none;
+            align-items: center;
+            gap: 12px;
+          "
+        >
+          <span style="font-size: 22px">📎</span>
+          <div style="flex: 1; min-width: 0">
+            <div
+              id="cv-filename"
+              style="
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--text);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              "
+            ></div>
+            <div
+              id="cv-filesize"
+              style="font-size: 12px; color: var(--text3); margin-top: 2px"
+            ></div>
+          </div>
+          <button
+            onclick="removeCV()"
+            style="
+              background: none;
+              border: none;
+              cursor: pointer;
+              font-size: 18px;
+              color: var(--text3);
+              padding: 0;
+              line-height: 1;
+            "
+            title="Supprimer"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Erreur globale -->
+      <div class="err-box" id="err-box"></div>
+
+      <div class="form-actions">
+        <button class="btn-ghost" onclick="window.location.href = 'index.html'">
+          Annuler
+        </button>
+        <button class="btn-cta" onclick="submitRegister()">
+          Créer mon profil →
+        </button>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"><span id="toast-msg"></span></div>
+    <script src="assets/js/register.js"></script>
+  </body>
+</html>
