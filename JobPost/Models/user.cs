@@ -33,7 +33,7 @@ namespace JobPost.Models
         public int Experience { get; set; }
 
         // Compétences
-        public string? Skills { get; set; }
+       public string Skills { get; set; }
 
         // Présentation
         public string? Bio { get; set; }

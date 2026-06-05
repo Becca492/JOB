@@ -24,8 +24,8 @@ namespace JobPost.Controllers
         // INSCRIPTION
         // ==========================
         [HttpPost("register")]
-        public async Task<IActionResult> Register(User model)
-        {
+public async Task<IActionResult> Register([FromBody] User model)
+{
             if (await _context.Users.AnyAsync(x => x.Email == model.Email))
             {
                 return BadRequest("Cet email existe déjà.");

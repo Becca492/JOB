@@ -187,9 +187,9 @@ async function submitRegister() {
   const pw = document.getElementById("r-pw").value;
   const pw2 = document.getElementById("r-pw2").value;
 
-  const skills = [...document.querySelectorAll("#chips-box .chip-tag")].map(
-    (c) => c.textContent.replace("×", "").trim(),
-  );
+  const skills = [...document.querySelectorAll("#chips-box .chip-tag")]
+    .map((c) => c.textContent.replace("×", "").trim())
+    .join(",");
 
   const errBox = document.getElementById("err-box");
 
