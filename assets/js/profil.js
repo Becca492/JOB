@@ -3,10 +3,14 @@ let user = null;
 
 window.addEventListener("DOMContentLoaded", () => {
   user = JSON.parse(sessionStorage.getItem("pj_user") || "null");
+
+  console.log("USER =", user);
+
   if (!user || user.role !== "candidat") {
     window.location.href = "index.html";
     return;
   }
+
   renderProfile();
   renderCVCard();
 });
@@ -14,22 +18,28 @@ window.addEventListener("DOMContentLoaded", () => {
 function renderCVCard() {
   const el = document.getElementById("cv-card-content");
   if (!el) return;
-  const cv = user.cv;
-  if (!cv || !cv.name) {
+
+  const cvPath = user.cvFilePath;
+
+  if (!cvPath) {
     el.innerHTML =
-      '<span style="color:var(--text3);font-style:italic;font-size:13px;">Aucun CV chargé — cliquez sur "Modifier le profil" pour en ajouter un.</span>';
+      '<span style="color:var(--text3);font-style:italic;font-size:13px;">Aucun CV — ajoutez-le via modifier profil.</span>';
     return;
   }
+
   el.innerHTML = `
-      <div style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--jade-soft);border:1px solid rgba(15,158,114,0.2);border-radius:var(--r-sm);">
-        <span style="font-size:32px;">📎</span>
-        <div style="flex:1;min-width:0;">
-          <div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${cv.name}</div>
-          <div style="font-size:12px;color:var(--text3);">${formatFileSize(cv.size || 0)} · Mis à jour récemment</div>
-        </div>
-        <a href="${cv.base64}" download="${cv.name}" style="display:inline-flex;align-items:center;gap:6px;padding:9px 16px;background:var(--jade);color:#fff;border-radius:var(--r-sm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap;transition:0.2s;">⬇ Télécharger</a>
+    <div style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--jade-soft);border:1px solid rgba(15,158,114,0.2);border-radius:var(--r-sm);">
+      <span style="font-size:32px;">📎</span>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:500;">CV disponible</div>
+        <div style="font-size:12px;color:var(--text3);">Fichier enregistré</div>
       </div>
-    `;
+      <a href="${cvPath}" download
+        style="padding:9px 16px;background:var(--jade);color:#fff;border-radius:var(--r-sm);text-decoration:none;">
+        ⬇ Télécharger
+      </a>
+    </div>
+  `;
 }
 
 function xpLabel(xp) {
@@ -51,8 +61,8 @@ function initials(p, n) {
 function renderProfile() {
   const u = user;
   const init = initials(u.prenom, u.nom);
-  const lvl = xpLabel(u.xp || 0);
-  const pct = Math.round(((u.xp || 0) / 20) * 100);
+  const lvl = xpLabel(u.experience || 0);
+  const pct = Math.round(((u.experience || 0) / 20) * 100);
 
   document.getElementById("topbar-ava").textContent = init;
   document.getElementById("topbar-name").textContent =
@@ -61,40 +71,44 @@ function renderProfile() {
   document.getElementById("p-nm").textContent = u.prenom + " " + u.nom;
   document.getElementById("p-role").textContent = u.poste || "—";
   document.getElementById("p-badge-xp").textContent =
-    `⭐ ${lvl} · ${u.xp || 0} ans`;
+    `⭐ ${lvl} · ${u.experience || 0} ans`;
   document.getElementById("p-badge-ville").textContent =
     `📍 ${u.ville || "—"}, ${u.pays || "CI"}`;
   document.getElementById("p-badge-dispo").textContent =
-    u.dispo === "Immédiate"
+    u.disponibilite === "Immédiate"
       ? "✅ Disponible immédiatement"
-      : `🕐 Dispo : ${u.dispo || "—"}`;
+      : `🕐 Dispo : ${u.disponibilite || "—"}`;
   document.getElementById("p-email").textContent = u.email;
-  document.getElementById("p-tel").textContent = u.tel || "—";
+  document.getElementById("p-tel").textContent = u.telephone || "—";
   document.getElementById("p-secteur").textContent = u.secteur || "—";
-  document.getElementById("p-etude").textContent = u.etude || "—";
-  document.getElementById("p-salaire").textContent = u.salaire
-    ? u.salaire + " FCFA/mois"
+  document.getElementById("p-etude").textContent = u.niveauEtude || "—";
+  document.getElementById("p-salaire").textContent = u.pretentionSalariale
+    ? u.pretentionSalariale + " FCFA/mois"
     : "—";
-  document.getElementById("p-xp-num").textContent = u.xp || 0;
+  document.getElementById("p-xp-num").textContent = u.experience || 0;
   document.getElementById("p-xp-bar").style.width = pct + "%";
   document.getElementById("p-xp-pill").textContent = lvl;
   document.getElementById("p-bio").textContent =
     u.bio || "Aucune présentation renseignée.";
-  document.getElementById("p-chips").innerHTML = (u.skills || []).length
-    ? (u.skills || []).map((s) => `<span class="chip-ro">${s}</span>`).join("")
-    : '<span style="color:var(--text3);font-style:italic;font-size:13px;">Aucune compétence renseignée</span>';
+  const skillsArr = (u.skills || "").split(",").filter((s) => s.trim() !== "");
 
-  // Complétion
   const fields = [
     u.prenom,
     u.nom,
     u.email,
     u.poste,
     u.ville,
-    u.tel,
+    u.telephone,
     u.bio,
-    u.salaire,
+    u.pretentionSalariale,
   ];
+
+  const filled = fields.filter((f) => f && String(f).trim()).length;
+
+  // bonus compétences corrigé
+  const skillBonus = skillsArr.length >= 3 ? 1 : 0;
+
+  const total = Math.round(((filled + skillBonus) / (fields.length + 1)) * 100);
   const filled = fields.filter((f) => f && String(f).trim()).length;
   const skillBonus = (u.skills || []).length >= 3 ? 1 : 0;
   const total = Math.round(((filled + skillBonus) / (fields.length + 1)) * 100);
@@ -173,22 +187,24 @@ function openModal() {
   document.getElementById("m-nom").value = u.nom || "";
   document.getElementById("m-poste").value = u.poste || "";
   document.getElementById("m-ville").value = u.ville || "";
-  document.getElementById("m-tel").value = u.tel || "";
+  document.getElementById("m-tel").value = u.telephone || "";
   document.getElementById("m-bio").value = u.bio || "";
-  document.getElementById("m-salaire").value = u.salaire || "";
+  document.getElementById("m-salaire").value = u.pretentionSalariale || "";
   // Selects
   setSelect("m-secteur", u.secteur);
-  setSelect("m-dispo", u.dispo);
-  setSelect("m-etude", u.etude);
+  setSelect("m-dispo", u.disponibilite);
+  setSelect("m-etude", u.niveauEtude);
   // XP slider
-  const xp = u.xp || 0;
+  const xp = u.experience || 0;
   document.getElementById("m-xp-slider").value = xp;
   updateModalSlider(xp);
   // Chips
   const box = document.getElementById("m-chips-box");
   const inp = document.getElementById("m-chip-inp");
   box.querySelectorAll(".chip-tag").forEach((c) => c.remove());
-  (u.skills || []).forEach((s) => {
+  const modalSkills = u.skills ? u.skills.split(",") : [];
+
+  modalSkills.forEach((s) => {
     const chip = document.createElement("div");
     chip.className = "chip-tag";
     chip.innerHTML =
@@ -251,7 +267,6 @@ function addModalChip(e) {
   e.preventDefault();
 }
 
-// ── Sauvegarder ──
 // ── Sauvegarder ──
 async function saveProfile() {
   const updates = {

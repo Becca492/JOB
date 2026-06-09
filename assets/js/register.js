@@ -174,16 +174,16 @@ async function submitRegister() {
   const prenom = document.getElementById("r-prenom").value.trim();
   const nom = document.getElementById("r-nom").value.trim();
   const email = document.getElementById("r-email").value.trim().toLowerCase();
-  const tel = document.getElementById("r-tel").value.trim();
+  const telephone = document.getElementById("r-tel").value.trim();
   const ville = document.getElementById("r-ville").value.trim();
   const pays = document.getElementById("r-pays").value;
   const poste = document.getElementById("r-poste").value.trim();
   const secteur = document.getElementById("r-secteur").value;
-  const dispo = document.getElementById("r-dispo").value;
-  const etude = document.getElementById("r-etude").value;
-  const salaire = document.getElementById("r-salaire").value.trim();
+  const disponibilite = document.getElementById("r-dispo").value;
+  const niveauEtude = document.getElementById("r-etude").value;
+  const pretentionSalariale = document.getElementById("r-salaire").value.trim();
   const bio = document.getElementById("r-bio").value.trim();
-  const xp = parseInt(document.getElementById("exp-slider").value) || 0;
+  const experience = parseInt(document.getElementById("exp-slider").value) || 0;
   const pw = document.getElementById("r-pw").value;
   const pw2 = document.getElementById("r-pw2").value;
 
@@ -213,24 +213,31 @@ async function submitRegister() {
   // ── OBJET USER ──
   const newUser = {
     email,
-    password: pw,
+    passwordHash: pw,
     role: regRole,
+
     prenom,
     nom,
-    poste,
+
+    telephone: telephone || "",
     ville: ville || "Abidjan",
     pays,
-    tel: tel || "",
-    bio: bio || "",
-    secteur,
-    dispo,
-    etude,
-    salaire: salaire || "0",
-    xp,
-    skills,
-    cv: cvData,
-  };
 
+    poste,
+    secteur,
+
+    disponibilite: disponibilite,
+    niveauEtude: niveauEtude,
+    pretentionSalariale: pretentionSalariale || "0",
+
+    experience: experience,
+
+    skills,
+
+    bio: bio || "",
+
+    cvFilePath: cvData ? cvData.name : "",
+  };
   try {
     const res = await fetch(`${API_URL}/auth/register`, {
       method: "POST",
@@ -244,7 +251,6 @@ async function submitRegister() {
     }
 
     const savedUser = await res.json();
-
     sessionStorage.setItem("pj_user", JSON.stringify(savedUser));
 
     showToast("🎉 Compte créé ! Redirection…", "var(--jade)");

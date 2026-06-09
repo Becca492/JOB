@@ -114,19 +114,22 @@ function renderTable() {
     });
   }
   if (secteur) list = list.filter((c) => c.secteur === secteur);
-  if (dispo) list = list.filter((c) => c.dispo === dispo);
-  if (xpMin) list = list.filter((c) => (c.xp || 0) >= xpMin);
+  if (dispo) list = list.filter((c) => c.disponibilite === dispo);
+  if (xpMin) list = list.filter((c) => (c.experience || 0) >= xpMin);
   if (ville) list = list.filter((c) => (c.ville || "") === ville);
 
   // Tri
   const sorts = {
     recent: (a, b) => (b.createdAt || 0) - (a.createdAt || 0),
-    "xp-desc": (a, b) => (b.xp || 0) - (a.xp || 0),
-    "xp-asc": (a, b) => (a.xp || 0) - (b.xp || 0),
+    "xp-desc": (a, b) => (b.experience || 0) - (a.experience || 0),
+    "xp-asc": (a, b) => (a.experience || 0) - (b.experience || 0),
     az: (a, b) => (a.nom || "").localeCompare(b.nom || ""),
     za: (a, b) => (b.nom || "").localeCompare(a.nom || ""),
-    "salaire-asc": (a, b) => parseNum(a.salaire) - parseNum(b.salaire),
-    "salaire-desc": (a, b) => parseNum(b.salaire) - parseNum(a.salaire),
+    "salaire-asc": (a, b) =>
+      parseNum(a.pretentionSalariale) - parseNum(b.pretentionSalariale),
+
+    "salaire-desc": (a, b) =>
+      parseNum(b.pretentionSalariale) - parseNum(a.pretentionSalariale),
   };
   list.sort(sorts[sort] || sorts["recent"]);
 
@@ -145,30 +148,32 @@ function renderTable() {
 
   container.innerHTML = list
     .map((c) => {
-      const lvl = xpLabel(c.xp || 0);
+      const lvl = xpLabel(c.experience || 0);
       const dot =
-        c.dispo === "Immédiate"
+        c.disponibilite === "Immédiate"
           ? "dot-green"
-          : c.dispo === "Sous 1 mois"
+          : c.disponibilite === "Sous 1 mois"
             ? "dot-amber"
             : "dot-grey";
       const init = initials(c.prenom || "?", c.nom || "?");
       const avSt = avatarStyle(c.secteur);
-      const chips = (c.skills || [])
+      const chips = (c.skills || "")
+        .split(",")
         .slice(0, 3)
-        .map((s) => `<span class="cand-chip">${s}</span>`)
+        .map((s) => `<span class="cand-chip">${s.trim()}</span>`)
         .join("");
       const saved = savedSet.has(c.email);
+
       const dispoCls =
-        c.dispo === "Immédiate"
-          ? "dispo-green"
-          : c.dispo === "Sous 1 mois"
-            ? "dispo-amber"
-            : "dispo-grey";
+        c.disponibilite === "Immédiate"
+          ? "pbadge-jade"
+          : c.disponibilite === "Sous 1 mois"
+            ? "pbadge-amber"
+            : "pbadge-grey";
       const dispoTxt =
-        c.dispo === "Immédiate"
+        c.disponibilite === "Immédiate"
           ? "✓ Immédiate"
-          : c.dispo === "Sous 1 mois"
+          : c.disponibilite === "Sous 1 mois"
             ? "⏱ 1 mois"
             : "🕐 3 mois+";
 
@@ -182,7 +187,7 @@ function renderTable() {
           </div>
         </div>
         <div class="cand-xp-cell col-xp">
-          ${c.xp || 0} ans
+          ${c.experience || 0} ans
           <span>${lvl}</span>
         </div>
         <div class="cand-chips">${chips}</div>
@@ -235,23 +240,24 @@ function resetFilters() {
 
 // ── Panel fiche candidat ──
 function openPanel(email) {
-  const accounts = JSON.parse(localStorage.getItem(DB_KEY) || "[]");
-  const c = accounts.find((a) => a.email === email);
+  const c = candidats.find((a) => a.email === email);
   if (!c) return;
 
-  const lvl = xpLabel(c.xp || 0);
-  const pct = Math.round(((c.xp || 0) / 20) * 100);
+  const lvl = xpLabel(c.experience || 0);
+  const pct = Math.round(((c.experience || 0) / 20) * 100);
   const init = initials(c.prenom || "?", c.nom || "?");
   const avSt = avatarStyle(c.secteur);
   const saved = savedSet.has(c.email);
   const dispoCls =
-    c.dispo === "Immédiate"
+    c.disponibilite === "Immédiate"
       ? "pbadge-jade"
-      : c.dispo === "Sous 1 mois"
+      : c.disponibilite === "Sous 1 mois"
         ? "pbadge-amber"
         : "pbadge-grey";
-  const dispoTxt = c.dispo === "Immédiate" ? "✅ Disponible" : c.dispo || "—";
-  const chips = (c.skills || [])
+  const dispoTxt =
+    c.disponibilite === "Immédiate" ? "✅ Disponible" : c.disponibilite || "—";
+  const chips = (c.skills || "")
+    .split(",")
     .map((s) => `<span class="chip-ro">${s}</span>`)
     .join("");
 
@@ -262,7 +268,7 @@ function openPanel(email) {
           <div class="panel-nm">${c.prenom} ${c.nom}</div>
           <div class="panel-role">${c.poste || "—"}</div>
           <div class="panel-badges">
-            <span class="pbadge pbadge-amber">⭐ ${lvl} · ${c.xp || 0} ans</span>
+            <span class="pbadge pbadge-amber">⭐ ${lvl} · ${c.experience || 0}  ans</span>
             <span class="pbadge pbadge-grey">📍 ${c.ville || "—"}</span>
             <span class="pbadge ${dispoCls}">${dispoTxt}</span>
           </div>
@@ -271,19 +277,22 @@ function openPanel(email) {
 
       <div class="panel-sec">Coordonnées</div>
       <div class="info-row"><span class="info-lbl">E-mail</span><span class="info-val">${c.email}</span></div>
-      <div class="info-row"><span class="info-lbl">Téléphone</span><span class="info-val">${c.tel || "—"}</span></div>
+      <div class="info-row"><span class="info-lbl">Téléphone</span><span class="info-val">${c.telephone || "—"}</span></div>
       <div class="info-row"><span class="info-lbl">Ville</span><span class="info-val">${c.ville || "—"}, ${c.pays || "CI"}</span></div>
 
       <div class="panel-sec">Profil professionnel</div>
       <div class="info-row"><span class="info-lbl">Secteur</span><span class="info-val">${c.secteur || "—"}</span></div>
       <div class="info-row"><span class="info-lbl">Niveau d'études</span><span class="info-val">${c.etude || "—"}</span></div>
-      <div class="info-row"><span class="info-lbl">Prétention salariale</span><span class="info-val">${c.salaire ? c.salaire + " FCFA/mois" : "—"}</span></div>
+      <div class="info-row">
+  <span class="info-lbl">Prétention salariale</span>
+  <span class="info-val">${c.pretentionSalariale ? c.pretentionSalariale + " FCFA/mois" : "—"}</span>
+</div>
       <div class="info-row"><span class="info-lbl">Disponibilité</span><span class="info-val">${c.dispo || "—"}</span></div>
 
       <div class="panel-sec">Expérience</div>
       <div class="xp-bar-wrap">
         <div class="xp-bar-top">
-          <div class="xp-big">${c.xp || 0}</div>
+          <div class="xp-big">${c.experience || 0} ans</div>
           <div class="xp-lvl">ans · niveau ${lvl}</div>
         </div>
         <div class="xp-track"><div class="xp-fill" style="width:${pct}%"></div></div>
@@ -321,11 +330,11 @@ function openPanel(email) {
           ✉️ Contacter par email
         </a>
         ${
-          c.tel
-            ? `<a href="tel:${c.tel}"
+          c.telephone
+            ? `<a href="tel:${c.telephone}"
           style="display:block;width:100%;padding:13px;background:transparent;border:1.5px solid var(--jade);border-radius:var(--r-sm);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--jade);text-align:center;text-decoration:none;transition:0.2s;box-sizing:border-box;"
           onmouseover="this.style.background='var(--jade-soft)'" onmouseout="this.style.background='transparent'">
-          📞 Appeler — ${c.tel}
+          📞 Appeler — ${c.telephone}
         </a>`
             : ""
         }
